@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<title>新手指引特效</title>
+	<style type="text/css">
+		*{margin:0; padding: 0;}
+		html{height: 100%; /*为了是蒙板正常撑开，兼容各浏览器*/}
+		body{background: url(images/body.png) center top;height: 100%;/*为了是蒙板正常撑开，兼容各浏览器*/}
+		#mask{height: 100%;width: 100%;position: absolute;top: 0;left: 0;background: #000;opacity:0.5; /*for Firefox and Chrome*/filter:alpha(opacity=50);/*for IE8*/display: none;}
+		#searchTip{width: 980px;height:800px;position: absolute;left: 50%;margin-left: -490px;display: none;}
+		#searchTip div{position: absolute; display:none}
+		#searchTip div a{position: absolute;width: 95px;height: 32px;text-indent: -999px;/*隐藏掉文字*/overflow: hidden;cursor: pointer;	}
+		#searchTip div span{position: absolute;width: 30px;height: 30px;text-indent: -999px;overflow: hidden;cursor: pointer;}
+
+		#searchTip .stepA{width: 745px;height: 329px;top:134px;left: -9px;background: url(images/guide11.png);}
+		#searchTip .stepA a{top:231px;left: 490px;}
+		#searchTip .stepA span{top: 144px;left: 683px;}
+		
+		
+		#searchTip .stepB{width: 647px;height: 405px;top:2px;left: 324px;background: url(images/guide21.png);}
+		#searchTip .stepB a{top:308px;left:146px;}
+		#searchTip .stepB span{top: 196px;left: 332px;}
+
+    	#searchTip .stepC{width: 654px;height: 257px;top:294px;left: 318px;background: url(images/guide31.png);}
+		#searchTip .stepC a{top:155px;left:400px;}
+		#searchTip .stepC span{top: 44px;left: 590px;}
+
+		#searchTip .stepD{width: 558px;height: 348px;top:78px;left: 155px;background: url(images/guide41.png);}
+		#searchTip .stepD a{top:246px;left:304px;}
+		#searchTip .stepD span{top: 135px;left: 492px;}
+		#searchTip .stepE{ background:url(images/guide51.png); width:397px; height:342px;top:79px; left:250px}
+		#searchTip .stepE a{top:245px; left:153px;}
+	</style>
+</head>
+<body>
+	<div id="mask"></div>
+	<div id="searchTip">
+		<div class="stepA"><a>下一步</a><span title="关闭">关闭</span></div>
+		<div class="stepB"><a>下一步</a><span title="关闭">关闭</span></div>
+		<div class="stepC"><a>下一步</a><span title="关闭">关闭</span></div>
+		<div class="stepD"><a>下一步</a><span title="关闭">关闭</span></div>
+		<div class="stepE"><a>下一步</a><span title="关闭">关闭</span></div>
+	</div>
+<script type="text/javascript">
+window.onload = function() {
+	var oMask = document.getElementById('mask');
+	var oSearch = document.getElementById('searchTip');
+	var aStep = oSearch.getElementsByTagName('div');
+	var aA = oSearch.getElementsByTagName('a');
+	var aClose = oSearch.getElementsByTagName('span');
+
+	//读取Cookie
+	var res = document.cookie.substring(5);
+	
+	//如果没有Cookie执行新手指引，并添加Cookie
+	if (res!="www.qupiaowang.com") {
+	// mask 父框 第一单元显示出来
+		oMask.style.display = oSearch.style.display = aStep[0].style.display = "block";
+		//下一步按钮
+		for (var i = 0; i<aStep.length; i++) {
+			aA[i].index = i; //为每个按钮增加一个index属性， 方便后续引用
+			aA[i].onclick = function() {
+				this.parentNode.style.display="none"; //让父框隐藏
+				//判断是否为最后一个按钮
+				if (this.index<aStep.length-1) {
+					aStep[this.index+1].style.display="block"; //让下一个出现
+				}else{
+					oMask.style.display = oSearch.style.display = "none";//隐藏所有蒙板及提示
+				}
+			}
+		}
+		//关闭按钮
+		for (var i = 0; i < aClose.length; i++) {
+			aClose[i].onclick = function() {
+				oMask.style.display = oSearch.style.display = "none";
+			}
+		}
+		
+		// 添加cookie
+		var oDate = new Date();
+		oDate.setDate(oDate.getDate()+30);
+		document.cookie = "name=www.qupiaowang.com; expires="+oDate;
+	}
+}	
+</script> 
+</body>
+</html>
